@@ -1,5 +1,5 @@
 ## Use Azure app service editor
-
+test
 1. make code change in the online editor
 
 Your code changes go live as the code changes are saved.
@@ -22,6 +22,3 @@ npm run azure-publish
 ## Use continuous integration
 
 If you have setup continuous integration, then your bot will automatically deployed when new changes are pushed to the source repository.
-
-
-
