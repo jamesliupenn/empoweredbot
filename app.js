@@ -4,7 +4,7 @@ A simple echo bot for the Microsoft Bot Framework.
 
 var restify = require('restify');
 var builder = require('botbuilder');
-const dashbot = require('dashbot')('pSlR1OnSRtC1FJKKuA2atcPtV0CMbmGLqqfqhctN').slack;
+//const dashbot = require('dashbot')('pSlR1OnSRtC1FJKKuA2atcPtV0CMbmGLqqfqhctN').slack;
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -53,24 +53,24 @@ bot.dialog('/', intents);
 
 //DASHBOT STUFF
 
-var messagebody = {
-  text: session.message.text
-}
-
-//**When you first connect, tell dashbot and save the bot and team locally
-request('https://slack.com/api/rtm.start?token=' + 'process.env.xoxp-249402146291-248960307745-266552918401-c2927b37573c75bd7b6a11d96cdc6dee', function(error, response) {
-  const parsedData = JSON.parse(response.body);
-
-  // Tell dashbot when you connect.
-  dashbot.logConnect(parsedData);
-  const bot = parsedData.self;
-  const team = parsedData.team;
-
-//**When you receive a message on the websocket, tell dashbot - passing bot, team, and message.
-connection.on(messagebody, function(message) {
-  const parsedMessage = JSON.parse(message.utf8Data);
-
-  // Tell dashbot when a message arrives
-  dashbot.logIncoming(bot, team, parsedMessage);
+// var messagebody = {
+//   text: session.message.text
+// }
+//
+// //**When you first connect, tell dashbot and save the bot and team locally
+// request('https://slack.com/api/rtm.start?token=' + 'process.env.xoxp-249402146291-248960307745-266552918401-c2927b37573c75bd7b6a11d96cdc6dee', function(error, response) {
+//   const parsedData = JSON.parse(response.body);
+//
+//   // Tell dashbot when you connect.
+//   dashbot.logConnect(parsedData);
+//   const bot = parsedData.self;
+//   const team = parsedData.team;
+//
+// //**When you receive a message on the websocket, tell dashbot - passing bot, team, and message.
+// connection.on(messagebody, function(message) {
+//   const parsedMessage = JSON.parse(message.utf8Data);
+//
+//   // Tell dashbot when a message arrives
+//   dashbot.logIncoming(bot, team, parsedMessage);
 
 //END DASHBOT STUFF
