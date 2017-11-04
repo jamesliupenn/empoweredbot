@@ -65,6 +65,7 @@ request('https://slack.com/api/rtm.start?token=' + process.env.SLACK_BOT_TOKEN, 
   dashbot.logConnect(parsedData);
   const bot = parsedData.self;
   const team = parsedData.team;
+}
 
 //**When you receive a message on the websocket, tell dashbot - passing bot, team, and message.
 connection.on(messagebody, function(message) {
@@ -72,5 +73,6 @@ connection.on(messagebody, function(message) {
 
   // Tell dashbot when a message arrives
   dashbot.logIncoming(bot, team, parsedMessage);
+}
 
 //END DASHBOT STUFF
