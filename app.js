@@ -48,10 +48,11 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
-.onDefault((session) => {
-    session.send('You said: \'%s\'.', session.message.text);
-
-});
+// 
+// .onDefault((session) => {
+//     session.send('You said: \'%s\'.', session.message.text);
+//
+// });
 
 bot.dialog('/', intents);
 
