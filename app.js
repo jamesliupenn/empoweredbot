@@ -48,7 +48,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
-// 
+//
 // .onDefault((session) => {
 //     session.send('You said: \'%s\'.', session.message.text);
 //
@@ -80,7 +80,7 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
           // reply on the web socket.
           const reply = {
             type: 'message',
-            text: 'You are right when you say: '+parsedMessage.text,
+            text: 'You are right when you say: '+parsedMessage,
             channel: parsedMessage.channel
           };
 
