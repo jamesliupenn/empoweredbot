@@ -50,6 +50,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 */
 .onDefault((session) => {
     session.send('You said: \'%s\'.', session.message.text);
+
 });
 
 bot.dialog('/', intents);
@@ -105,5 +106,7 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
   });
   client.connect(parsedData.url);
 });
+
+
 
 //END DASHBOT STUFF
