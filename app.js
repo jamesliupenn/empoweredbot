@@ -5,6 +5,7 @@ require('dotenv').config();
 var restify = require('restify');
 var builder = require('botbuilder');
 var request = require('request');
+const util = require('util')
 var WebSocketClient = require('websocket').client;
 var client = new WebSocketClient();
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
@@ -80,7 +81,7 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
           // reply on the web socket.
           const reply = {
             type: 'message',
-            text: 'You are right when you say: '+parsedMessage,
+            text: 'You are right when you say: '+parsedMessage.text,
             channel: parsedMessage.channel
           };
 
