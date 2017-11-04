@@ -1,7 +1,7 @@
 /*-----------------------------------------------------------------------------
 A simple echo bot for the Microsoft Bot Framework.
 -----------------------------------------------------------------------------*/
-
+require('dotenv').config();
 var restify = require('restify');
 var builder = require('botbuilder');
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
