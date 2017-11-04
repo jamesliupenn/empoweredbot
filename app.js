@@ -58,7 +58,7 @@ var messagebody = {
 }
 
 //**When you first connect, tell dashbot and save the bot and team locally
-request('https://slack.com/api/rtm.start?token=' + process.env.SLACK_BOT_TOKEN, function(error, response) {
+request('https://slack.com/api/rtm.start?token=' + process.env.xoxb-267119409108-O523dJdn6nptZyWbDzSDFFeC, function(error, response) {
   const parsedData = JSON.parse(response.body);
 
   // Tell dashbot when you connect.
