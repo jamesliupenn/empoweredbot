@@ -4,6 +4,9 @@ A simple echo bot for the Microsoft Bot Framework.
 require('dotenv').config();
 var restify = require('restify');
 var builder = require('botbuilder');
+var request = require('request');
+var WebSocketClient = require('websocket').client;
+var client = new WebSocketClient();
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
 
 // Setup Restify Server
@@ -53,26 +56,54 @@ bot.dialog('/', intents);
 
 //DASHBOT STUFF
 
-var messagebody = {
-  text: session.message.text
-}
-
-//**When you first connect, tell dashbot and save the bot and team locally
-request('https://slack.com/api/rtm.start?token=' + process.env.SLACK_BOT_TOKEN, function(error, response) {
+request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, function(error, response) {
   const parsedData = JSON.parse(response.body);
 
   // Tell dashbot when you connect.
   dashbot.logConnect(parsedData);
+
   const bot = parsedData.self;
   const team = parsedData.team;
-})
+  client.on('connect', function(connection) {
+    console.log('Slack bot ready');
+    connection.on('message', function(message) {
+      const parsedMessage = JSON.parse(message.utf8Data);
 
-//**When you receive a message on the websocket, tell dashbot - passing bot, team, and message.
-connection.on(messagebody, function(message) {
-  const parsedMessage = JSON.parse(message.utf8Data);
+      // Tell dashbot when a message arrives
+      dashbot.logIncoming(bot, team, parsedMessage);
 
-  // Tell dashbot when a message arrives
-  dashbot.logIncoming(bot, team, parsedMessage);
-})
+      if (parsedMessage.type === 'message' && parsedMessage.channel &&
+        parsedMessage.channel[0] === 'D' && parsedMessage.user !== bot.id) {
+        if (parsedMessage.text.length%2 === 0) {
+          // reply on the web socket.
+          const reply = {
+            type: 'message',
+            text: 'You are right when you say: '+parsedMessage.text,
+            channel: parsedMessage.channel
+          };
+
+          // Tell dashbot about your response
+          dashbot.logOutgoing(bot, team, reply);
+
+          connection.sendUTF(JSON.stringify(reply));
+        } else {
+          // reply using chat.postMessage
+          const reply = {
+            text: 'You are wrong when you say: '+parsedMessage.text,
+            as_user: true,
+            channel: parsedMessage.channel
+          };
+
+          // Tell dashbot about your response
+          dashbot.logOutgoing(bot, team, reply);
+
+          request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
+        }
+      }
+
+    });
+  });
+  client.connect(parsedData.url);
+});
 
 //END DASHBOT STUFF

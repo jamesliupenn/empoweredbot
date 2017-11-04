@@ -7,10 +7,11 @@
     "botbuilder": "^3.8.4",
     "dashbot": "^9.4.0",
     "dotenv": "^4.0.0",
-    "restify": "^5.0.0"
+    "restify": "^5.0.0",
+    "websocket": "^1.0.25"
   },
   "devDependencies": {
-    "request": "^2.81.0",
+    "request": "^2.83.0",
     "zip-folder": "^1.0.0"
   },
   "scripts": {
