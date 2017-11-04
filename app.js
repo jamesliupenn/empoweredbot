@@ -4,7 +4,7 @@ A simple echo bot for the Microsoft Bot Framework.
 
 var restify = require('restify');
 var builder = require('botbuilder');
-const dashbot = require('dashbot')(process.env.pSlR1OnSRtC1FJKKuA2atcPtV0CMbmGLqqfqhctN).slack;
+const dashbot = require('dashbot')('pSlR1OnSRtC1FJKKuA2atcPtV0CMbmGLqqfqhctN').slack;
 
 // Setup Restify Server
 var server = restify.createServer();
