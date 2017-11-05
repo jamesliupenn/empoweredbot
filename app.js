@@ -7,6 +7,7 @@ var builder = require('botbuilder');
 var request = require('request');
 var reply = require('./reply');
 const util = require('util')
+var luis = require('./luis');
 var WebSocketClient = require('websocket').client;
 var client = new WebSocketClient();
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
@@ -46,7 +47,10 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' +
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
-var intents = new builder.IntentDialog({ recognizers: [recognizer] })
+var intents = new builder.IntentDialog({ recognizers: [recognizer] });
+              // .onDefault((session) => {
+              //   session.send(luis.getIntent("happy"));
+              // })
 /*
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
