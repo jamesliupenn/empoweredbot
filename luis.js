@@ -19,7 +19,6 @@ function getIntent(utterance) {
 		"q": utterance
 	}
 	var luisURL = endpoint + luisAppId + '?' + querystring.stringify(queryParams);
-	console.log(luisURL);
 	if (utterance) {
 		return new Promise((resolve, reject) => {
 			request(luisURL, (err, data) => {
@@ -31,7 +30,8 @@ function getIntent(utterance) {
 		})
 		.then((data) => {
 			// var output = data.body;
-			console.log(data.body);
+			var output = data.body;
+			return output;
 		})
 	}
 	else {

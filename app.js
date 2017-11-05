@@ -6,6 +6,7 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var request = require('request');
 const util = require('util')
+const luis = require('./luis');
 var WebSocketClient = require('websocket').client;
 var client = new WebSocketClient();
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
@@ -80,27 +81,29 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
     connection.on('message', function(message) {
       const parsedMessage = JSON.parse(message.utf8Data);
 
+      const luisResponse = luis.getIntent(parsedMessage);
+
       // Tell dashbot when a message arrives
       dashbot.logIncoming(bot, team, parsedMessage);
 
       if (parsedMessage.type === 'message' && parsedMessage.channel &&
         parsedMessage.channel[0] === 'D' && parsedMessage.user !== bot.id) {
-        if (parsedMessage.text.length%2 === 0) {
-          // reply on the web socket.
-          const reply = {
-            type: 'message',
-            text: 'You are rightt when you say: '+parsedMessage.text,
-            channel: parsedMessage.channel
-          };
+        // if (parsedMessage.text.length%2 === 0) {
+        //   // reply on the web socket.
+        //   const reply = {
+        //     type: 'message',
+        //     text: 'You are rightt when you say: '+parsedMessage.text,
+        //     channel: parsedMessage.channel
+        //   };
 
-          // Tell dashbot about your response
-          dashbot.logOutgoing(bot, team, reply);
+        //   // Tell dashbot about your response
+        //   dashbot.logOutgoing(bot, team, reply);
 
-          connection.sendUTF(JSON.stringify(reply));
-        } else {
+        //   connection.sendUTF(JSON.stringify(reply));
+        // } else {
           // reply using chat.postMessage
           const reply = {
-            text: 'You are wrong when you say: '+parsedMessage.text,
+            text: 'You are wrong when you say: '+luisResponse.output,
             as_user: true,
             channel: parsedMessage.channel
           };
@@ -109,7 +112,7 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
           dashbot.logOutgoing(bot, team, reply);
 
           request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
-        }
+        // }
       }
 
     });
