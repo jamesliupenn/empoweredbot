@@ -5,9 +5,7 @@ require('dotenv').config();
 var restify = require('restify');
 var builder = require('botbuilder');
 var request = require('request');
-var reply = require('./reply');
 const util = require('util')
-var luis = require('./luis');
 var WebSocketClient = require('websocket').client;
 var client = new WebSocketClient();
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
@@ -47,10 +45,7 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' +
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
-var intents = new builder.IntentDialog({ recognizers: [recognizer] });
-              // .onDefault((session) => {
-              //   session.send(luis.getIntent("happy"));
-              // })
+var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
@@ -82,19 +77,37 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
 
       if (parsedMessage.type === 'message' && parsedMessage.channel &&
         parsedMessage.channel[0] === 'D' && parsedMessage.user !== bot.id) {
+        if (parsedMessage.text.length%2 === 0) {
+          // reply on the web socket.
+          const reply = {
+            type: 'message',
+            text: 'You are right when you say: '+parsedMessage.text,
+            channel: parsedMessage.channel
+          };
 
-          reply(parsedMessage);
+          // Tell dashbot about your response
+          dashbot.logOutgoing(bot, team, reply);
+
+          connection.sendUTF(JSON.stringify(reply));
+        } else {
+          // reply using chat.postMessage
+          const reply = {
+            text: 'You are wrong when you say: '+parsedMessage.text,
+            as_user: true,
+            channel: parsedMessage.channel
+          };
+
           // Tell dashbot about your response
           dashbot.logOutgoing(bot, team, reply);
 
           request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
         }
+      }
 
     });
   });
   client.connect(parsedData.url);
 });
-
 
 
 //END DASHBOT STUFF
