@@ -7,7 +7,7 @@
     "botbuilder": "^3.8.4",
     "dashbot": "^9.4.0",
     "dotenv": "^4.0.0",
-    "restify": "^5.0.0",
+    "restify": "^5.2.0",
     "websocket": "^1.0.25"
   },
   "devDependencies": {
