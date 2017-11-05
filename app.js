@@ -49,15 +49,23 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
-//
 // .onDefault((session) => {
-//     session.send('You said: \'%s\'.', session.message.text);
-//
+//     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 // });
-
+// session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 bot.dialog('/', intents);
 
 //DASHBOT STUFF
+
+'use strict';
+
+if (!process.env.DASHBOT_API_KEY) {
+  throw new Error('"DASHBOT_API_KEY" environment variable must be defined');
+}
+if (!process.env.SLACK_BOT_TOKEN) {
+  throw new Error('"SLACK_BOT_TOKEN" environment variable must be defined');
+}
+
 
 request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, function(error, response) {
   const parsedData = JSON.parse(response.body);
@@ -81,7 +89,7 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
           // reply on the web socket.
           const reply = {
             type: 'message',
-            text: 'You are right when you say: '+parsedMessage.text,
+            text: 'You are rightt when you say: '+parsedMessage.text,
             channel: parsedMessage.channel
           };
 
@@ -108,19 +116,6 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
   });
   client.connect(parsedData.url);
 });
-
-// var bot = new builder.UniversalBot(connector, [
-//     //...Default dialog waterfall steps...
-//     ]);
-//
-//   bot.dialog('greetings', [
-//       function (session) {
-//           builder.Prompts.text(session, 'Hi! What is your name?');
-//       },
-//       function (session, results) {
-//           session.endDialog(`Hello ${results.response}!`);
-//       }
-//   ]);
 
 
 //END DASHBOT STUFF
