@@ -30,7 +30,6 @@ function getIntent(utterance) {
 			});
 		})
 		.then((data) => {
-			// var output = data.body;
 			var output = data.body;
 			return output;
 		})
