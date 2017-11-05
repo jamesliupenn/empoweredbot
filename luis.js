@@ -9,7 +9,7 @@ require('dotenv').config();
 function getIntent(utterance) {
 	var endpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/";
 
-	// Set the LUIS_APP_ID environment variable 
+	// Set the LUIS_APP_ID environment variable
 	var luisAppId = process.env.LuisAppId;
 
 	// Set the LUIS_SUBSCRIPTION_KEY environment variable
@@ -35,7 +35,7 @@ function getIntent(utterance) {
 		})
 	}
 	else {
-		return console.log("What did you say again?");
+		return "What did you say again?";
 	}
 }
 
