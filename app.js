@@ -6,7 +6,6 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var request = require('request');
 const util = require('util')
-const luis = require('./luis');
 var WebSocketClient = require('websocket').client;
 var client = new WebSocketClient();
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
@@ -53,8 +52,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 // .onDefault((session) => {
 //     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 // });
-// session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-bot.dialog('/', intents);
+
+// bot.dialog('/', intents);
 
 //DASHBOT STUFF
 
@@ -81,37 +80,39 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
     connection.on('message', function(message) {
       const parsedMessage = JSON.parse(message.utf8Data);
 
-      const luisResponse = luis.getIntent(parsedMessage);
-
       // Tell dashbot when a message arrives
       dashbot.logIncoming(bot, team, parsedMessage);
 
       if (parsedMessage.type === 'message' && parsedMessage.channel &&
         parsedMessage.channel[0] === 'D' && parsedMessage.user !== bot.id) {
-        // if (parsedMessage.text.length%2 === 0) {
-        //   // reply on the web socket.
-        //   const reply = {
-        //     type: 'message',
-        //     text: 'You are rightt when you say: '+parsedMessage.text,
-        //     channel: parsedMessage.channel
-        //   };
 
-        //   // Tell dashbot about your response
-        //   dashbot.logOutgoing(bot, team, reply);
-
-        //   connection.sendUTF(JSON.stringify(reply));
-        // } else {
-          // reply using chat.postMessage
+          //put LUIS logic here*****
+        if (parsedMessage.text.length%2 === 0) {
+          // reply on the web socket.
           const reply = {
-            text: 'You are wrong when you say: '+luisResponse,
-            as_user: true,
+            type: 'message',
+            text: 'You are right when you say: '+parsedMessage.text,
             channel: parsedMessage.channel
           };
 
           // Tell dashbot about your response
           dashbot.logOutgoing(bot, team, reply);
 
-          request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
+          connection.sendUTF(JSON.stringify(reply));
+        }
+        //don't need this part
+        // else {
+        //   // reply using chat.postMessage
+        //   const reply = {
+        //     text: 'You are wrong when you say: '+parsedMessage.text,
+        //     as_user: true,
+        //     channel: parsedMessage.channel
+        //   };
+        //
+        //   // Tell dashbot about your response
+        //   dashbot.logOutgoing(bot, team, reply);
+        //
+        //   request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
         // }
       }
 
