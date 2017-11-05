@@ -103,7 +103,7 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
         // } else {
           // reply using chat.postMessage
           const reply = {
-            text: 'You are wrong when you say: '+luisResponse.output,
+            text: 'You are wrong when you say: '+luisResponse,
             as_user: true,
             channel: parsedMessage.channel
           };
