@@ -1,13 +1,15 @@
 var luis = require('./luis');
 
 function sentToLuis(parsedMessage) {
+	// let resbody;
 	luis.getIntent(parsedMessage)
 
 	.then((output) => {
 		//console.log(output);
 		output = JSON.parse(output);
-		let resp = logic(output);
-		return resp
+		module.exports.resbody = logic(output)
+		//return logic(output)
+
 	})
 
 }
@@ -39,7 +41,7 @@ function logic(input) {
 		// strong intent, ask for confirmation
 		else {
 			if (topIntent.intent == "Unhappy") {
-			let	reply = `It seems like you're having trouble with your ${keyword}`;
+			let	reply = `It seems like you're having trouble with your ${keyword}. You can always find your department HR representative at http://www.Microsoft.com/Resources/HR.`;
 			return reply;
 			}
 		}
@@ -47,7 +49,7 @@ function logic(input) {
 
 }
 
-sentToLuis("I hate my boss")
+// sentToLuis("I hate my boss")
 
 module.exports.sentToLuis = sentToLuis;
 

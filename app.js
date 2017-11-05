@@ -83,27 +83,41 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
 
       // Tell dashbot when a message arrives
       dashbot.logIncoming(bot, team, parsedMessage);
-
+      // responses.sentToLuis(parsedMessage.text)
       if (parsedMessage.type === 'message' && parsedMessage.channel &&
         parsedMessage.channel[0] === 'D' && parsedMessage.user !== bot.id) {
-
           responses.sentToLuis(parsedMessage.text)
 
-          .then((resbody) => {
+          if (responses.resbody) {
             const reply = {
               type: 'message',
-              text: resbody,
+              text: responses.resbody,
               channel: parsedMessage.channel
-            };
-            return reply
-          })
-
-
-          .then((reply) => {
-            console.log("replying")
+            }
+            console.log(reply.text)
             dashbot.logOutgoing(bot, team, reply);
             connection.sendUTF(JSON.stringify(reply));
-          })
+          }
+
+          // let respbody = responses.sentToLuis(parsedMessage.text);
+          // if (respbody) {
+          //   const reply = {
+          //     type: 'message',
+          //     text: resbody,
+          //     channel: parsedMessage.channel
+          //   };
+          //   console.log(respbody)
+          //   dashbot.logOutgoing(bot, team, reply);
+          //   connection.sendUTF(JSON.stringify(reply));
+          // }
+
+
+
+          // .then((reply) => {
+          //   console.log("replying")
+          //   dashbot.logOutgoing(bot, team, reply);
+          //   connection.sendUTF(JSON.stringify(reply));
+          // })
 
 
           // Tell dashbot about your response
