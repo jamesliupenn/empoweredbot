@@ -109,6 +109,18 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
   client.connect(parsedData.url);
 });
 
+// var bot = new builder.UniversalBot(connector, [
+//     //...Default dialog waterfall steps...
+//     ]);
+//
+//   bot.dialog('greetings', [
+//       function (session) {
+//           builder.Prompts.text(session, 'Hi! What is your name?');
+//       },
+//       function (session, results) {
+//           session.endDialog(`Hello ${results.response}!`);
+//       }
+//   ]);
 
 
 //END DASHBOT STUFF
