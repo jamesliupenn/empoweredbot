@@ -6,6 +6,7 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var request = require('request');
 const util = require('util')
+var luis = require('./luis');
 var WebSocketClient = require('websocket').client;
 var client = new WebSocketClient();
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
@@ -109,6 +110,7 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
   client.connect(parsedData.url);
 });
 
+luis.getIntent("happy");
 
 
 //END DASHBOT STUFF
