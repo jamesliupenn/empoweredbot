@@ -1,8 +1,56 @@
-        
-module.exports.reply = function(request, response){
-
-        response.send("a");
+function reply(parsedMessage){
+        console.log(replyMessage);
 }
+
+
+/*
+mood/stage
+
+
+
+Hey Alex
+- Hey
+mood: good, bad, nutral
+
+General Bad mood
+Is there anything bothering you?
+...
+Job disatisfaction:
+Have you thought about talking to someone about that?
+Here is person that could help you find a better position.
+
+General disatisfaction:
+Have you thought about talking to someone about that?
+Take a break
+
+Harrasment/Interpersonal
+Have you told them that makes you uncomfortable, unhappy etc?
+Here is a person that could help you resolve that.
+
+
+
+nutral mood:
+What did you think about the last meeting?
+....
+Bad:
+How do you think it could be better?
+Good:
+What did you like about it?
+
+
+Good mood:
+Glad to hear you're doing well.
+Anything making you happy?
+
+Good/Nutral:
+If that doesn't work you can always talk to Blank
+
+Bad:
+Here is someone you could talk to that could help you.
+
+*/
+
+
 
 
 
