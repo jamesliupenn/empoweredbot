@@ -44,9 +44,3 @@ module.exports = {
 	}
 }
 
-
-// // Pass an utterance to the sample LUIS app
-// getIntent('turn on the left light');
-
-// module.exports = getIntent;
-
