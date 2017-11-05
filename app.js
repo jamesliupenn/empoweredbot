@@ -52,8 +52,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 // .onDefault((session) => {
 //     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 // });
-// session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-bot.dialog('/', intents);
+
+// bot.dialog('/', intents);
 
 //DASHBOT STUFF
 
@@ -85,11 +85,13 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
 
       if (parsedMessage.type === 'message' && parsedMessage.channel &&
         parsedMessage.channel[0] === 'D' && parsedMessage.user !== bot.id) {
+
+          //put LUIS logic here*****
         if (parsedMessage.text.length%2 === 0) {
           // reply on the web socket.
           const reply = {
             type: 'message',
-            text: 'You are rightt when you say: '+parsedMessage.text,
+            text: 'You are right when you say: '+parsedMessage.text,
             channel: parsedMessage.channel
           };
 
@@ -97,19 +99,21 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
           dashbot.logOutgoing(bot, team, reply);
 
           connection.sendUTF(JSON.stringify(reply));
-        } else {
-          // reply using chat.postMessage
-          const reply = {
-            text: 'You are wrong when you say: '+parsedMessage.text,
-            as_user: true,
-            channel: parsedMessage.channel
-          };
-
-          // Tell dashbot about your response
-          dashbot.logOutgoing(bot, team, reply);
-
-          request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
         }
+        //don't need this part
+        // else {
+        //   // reply using chat.postMessage
+        //   const reply = {
+        //     text: 'You are wrong when you say: '+parsedMessage.text,
+        //     as_user: true,
+        //     channel: parsedMessage.channel
+        //   };
+        //
+        //   // Tell dashbot about your response
+        //   dashbot.logOutgoing(bot, team, reply);
+        //
+        //   request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
+        // }
       }
 
     });
