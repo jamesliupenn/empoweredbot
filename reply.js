@@ -1,5 +1,5 @@
 function reply(parsedMessage){
-        console.log(replyMessage);
+        console.log(parsedMessage);
 }
 
 
